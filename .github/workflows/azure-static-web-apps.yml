@@ -17,6 +17,7 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_SWA_TOKEN }}
           action: "upload"
-          app_location: "/"        # ROOT
-          output_location: ""      # STATIC HTML → NO BUILD
+          app_location: "/"
+          output_location: ""    # KOSONGKAN
+
 

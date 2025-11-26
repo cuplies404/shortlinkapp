@@ -1,27 +1,30 @@
 #!/bin/bash
 
-# Set variables
-REPO="https://github.com/cuplies404/shortlinkapp-empty.git"
-BRANCH="main"
+# ================================
+# Script deploy Shortlink App
+# ================================
 
-echo "🔹 Deploy Shortlink App ke GitHub dan Azure Static Web App..."
+# Cek branch aktif
+branch=$(git rev-parse --abbrev-ref HEAD)
+echo "Current branch: $branch"
 
-# Init git if not already
-if [ ! -d ".git" ]; then
-    git init
-    git checkout -b $BRANCH
-    git remote add origin $REPO
-fi
-
-# Add all files
+# Tambahkan semua file
 git add .
-git commit -m "Deploy update $(date '+%Y-%m-%d %H:%M:%S')" 2>/dev/null
 
-# Pull latest to avoid conflict
-git pull origin $BRANCH --rebase
+# Commit perubahan
+git commit -m "Auto deploy Shortlink App $(date '+%Y-%m-%d %H:%M:%S')" 2>/dev/null
 
-# Push changes
-git push -u origin $BRANCH
+# Push ke GitHub
+echo "Pushing to GitHub..."
+git push origin main
 
-echo "✅ Semua file di-push ke GitHub. Azure Static Web App akan auto-deploy."
+# Tunggu sebentar agar GitHub Actions trigger
+echo "Waiting 5 seconds for workflow to start..."
+sleep 5
+
+# Tampilkan status deploy
+echo "Login to Azure portal to verify deployment:"
+echo "https://portal.azure.com/#resource/subscriptions/YOUR_SUBSCRIPTION_ID/resourceGroups/rg-shortlink/providers/Microsoft.Web/staticSites/shortlinkapp-eastasia"
+
+echo "✅ Deployment script finished."
 
